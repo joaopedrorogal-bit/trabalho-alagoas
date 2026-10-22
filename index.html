@@ -1,0 +1,687 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desafio das Águas</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
+    background:
+        radial-gradient(ellipse at top, #17617a 0%, transparent 55%),
+        linear-gradient(135deg, #071827, #102f48, #071827);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.tela {
+    width: 100%;
+    max-width: 1100px;
+    text-align: center;
+}
+
+.etiqueta {
+    color: #ffd778;
+    font-weight: bold;
+    letter-spacing: 4px;
+    font-size: 15px;
+}
+
+h1 {
+    font-size: clamp(38px, 6vw, 76px);
+    margin: 15px 0;
+    color: #ffd778;
+    text-shadow: 0 0 25px #d59b3d66;
+}
+
+.subtitulo {
+    font-size: 20px;
+    color: #c7e7f2;
+    margin-bottom: 30px;
+}
+
+.painel {
+    background: #ffffff0c;
+    border: 2px solid #e9c66d88;
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 0 40px #0005;
+}
+
+.linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    color: #ffdf8b;
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.barra {
+    height: 8px;
+    background: #ffffff20;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 28px;
+}
+
+.progresso {
+    width: 0%;
+    height: 100%;
+    background: #ffd778;
+    transition: width .3s;
+}
+
+.tema {
+    display: inline-block;
+    border: 1px solid #79d8ed;
+    color: #8fe5f5;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: clamp(24px, 3.5vw, 38px);
+    line-height: 1.35;
+    margin: 0 auto 28px;
+}
+
+.alternativas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.alternativa {
+    background: #163e56;
+    border: 2px solid #3e6a80;
+    border-radius: 15px;
+    color: white;
+    padding: 20px;
+    font-size: clamp(17px, 2vw, 23px);
+    text-align: left;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.alternativa.selecionada {
+    border: 3px solid #ffd778;
+    background: #27617a;
+    box-shadow: 0 0 18px #ffd77855;
+}
+
+.alternativa:focus {
+    outline: 3px solid #ffd778;
+}
+
+.alternativa:disabled {
+    cursor: default;
+}
+
+.letra {
+    background: #ffd778;
+    color: #10283b;
+    border-radius: 10px;
+    min-width: 42px;
+    height: 42px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.rodape {
+    color: #aac8d8;
+    margin-top: 25px;
+    font-size: 15px;
+}
+
+.escondido {
+    display: none !important;
+}
+
+.botao {
+    border: 0;
+    border-radius: 12px;
+    padding: 16px 24px;
+    font-size: 17px;
+    font-weight: bold;
+    background: #ffd778;
+    color: #10283b;
+    cursor: pointer;
+    margin: 8px;
+    transition: .2s;
+}
+
+.botao:hover:not(:disabled) {
+    background: #ffe7a6;
+    transform: translateY(-2px);
+}
+
+.botao:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.botao-secundario {
+    background: #244d65;
+    color: white;
+    border: 1px solid #6993a8;
+}
+
+#feedback {
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin: 20px 0;
+    color: #bcecf5;
+}
+
+.resultado {
+    font-size: 22px;
+    line-height: 1.6;
+    margin: 25px 0;
+}
+
+#pontuacaoFinal {
+    font-size: clamp(30px, 5vw, 48px);
+    color: #ffd778;
+    font-weight: bold;
+}
+
+.gabarito {
+    text-align: left;
+    background: #071827;
+    padding: 20px;
+    border-radius: 12px;
+    line-height: 1.8;
+    margin-top: 20px;
+}
+
+#mensagemFinal {
+    font-weight: bold;
+    color: #ffd778;
+}
+
+@media (max-width: 650px) {
+    .alternativas {
+        grid-template-columns: 1fr;
+    }
+
+    .painel {
+        padding: 20px;
+    }
+
+    .linha {
+        font-size: 14px;
+    }
+
+    .botao {
+        padding: 13px 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+<main class="tela">
+
+<!-- TELA INICIAL -->
+<section id="inicio">
+    <div class="etiqueta">ESPECIAL • FEIRA DE CIÊNCIAS</div>
+
+    <h1>DESAFIO<br>DAS ÁGUAS</h1>
+
+    <p class="subtitulo">
+        Conhecimento, natureza e um grande desafio!
+    </p>
+
+    <div class="painel">
+        <h2>Você consegue acertar pelo menos 7 das 10 perguntas?</h2>
+
+        <p class="subtitulo">
+            Lagoas Mundaú e Manguaba • Rio São Francisco
+        </p>
+
+        <p>
+            Responda em voz alta. Os apresentadores registrarão suas respostas.
+        </p>
+
+        <p style="color:#ffd778;font-weight:bold">
+            Acerte 7 ou mais e ganhe uma lembrancinha!
+        </p>
+
+        <button class="botao" onclick="comecar()">
+            INICIAR DESAFIO
+        </button>
+
+        <p class="rodape">
+            Use as teclas A, B, C ou D para selecionar uma alternativa.
+        </p>
+    </div>
+</section>
+
+<!-- TELA DAS PERGUNTAS -->
+<section id="jogo" class="escondido">
+    <div class="etiqueta">DESAFIO DAS ÁGUAS</div>
+
+    <h1 style="font-size:clamp(32px,5vw,55px)">
+        HORA DO DESAFIO!
+    </h1>
+
+    <div class="painel">
+
+        <div class="linha">
+            <span id="numero">PERGUNTA 1 DE 10</span>
+            <span id="area">MATEMÁTICA</span>
+        </div>
+
+        <div class="barra">
+            <div id="progresso" class="progresso"></div>
+        </div>
+
+        <div id="tema" class="tema">MATEMÁTICA</div>
+
+        <h2 id="pergunta"></h2>
+
+        <div id="alternativas" class="alternativas"></div>
+
+        <div id="feedback" aria-live="polite"></div>
+
+        <button id="confirmar" class="botao"
+                onclick="confirmarResposta()">
+            CONFIRMAR RESPOSTA
+        </button>
+
+        <div>
+            <button class="botao botao-secundario"
+                    onclick="anterior()">
+                ← ANTERIOR
+            </button>
+
+            <button id="botaoProxima" class="botao"
+                    onclick="proxima()">
+                PRÓXIMA →
+            </button>
+        </div>
+
+        <button class="botao botao-secundario"
+                onclick="mostrarGabarito()">
+            GABARITO DO APRESENTADOR
+        </button>
+
+        <div id="gabarito" class="gabarito escondido"></div>
+
+        <p class="rodape">
+            Selecione a alternativa que o visitante respondeu e confirme.
+        </p>
+    </div>
+</section>
+
+<!-- TELA FINAL -->
+<section id="fim" class="escondido">
+    <div class="etiqueta">RESULTADO OFICIAL</div>
+
+    <h1 id="tituloFinal">DESAFIO CONCLUÍDO!</h1>
+
+    <div class="painel">
+        <div style="font-size:75px">🏆</div>
+
+        <h2>Seu resultado</h2>
+
+        <p id="pontuacaoFinal">0/10</p>
+
+        <p id="detalheFinal" class="resultado"></p>
+
+        <p id="mensagemFinal" class="resultado"></p>
+
+        <button class="botao" onclick="reiniciar()">
+            NOVO PARTICIPANTE
+        </button>
+    </div>
+</section>
+
+</main>
+
+<script>
+const perguntas = [
+{
+    tema: "Matemática",
+    texto: "A escala é 1:20.000. Uma distância de 3 cm representa:",
+    opcoes: ["60 m", "600 m", "6 km", "60 km"],
+    correta: 1,
+    explicacao: "3 × 20.000 = 60.000 cm, ou seja, 600 metros."
+},
+{
+    tema: "Biologia",
+    texto: "A retirada da mata ciliar favorece principalmente:",
+    opcoes: [
+        "A erosão das margens",
+        "A filtragem do esgoto",
+        "O aumento do oxigênio",
+        "A redução do assoreamento"
+    ],
+    correta: 0,
+    explicacao: "Sem raízes para estabilizar o solo, a erosão pode aumentar."
+},
+{
+    tema: "Matemática",
+    texto: "Uma lagoa tem 8 km². Em hectares, isso equivale a:",
+    opcoes: ["80 ha", "800 ha", "8.000 ha", "800.000 ha"],
+    correta: 1,
+    explicacao: "1 km² equivale a 100 hectares. Logo, 8 km² equivalem a 800 ha."
+},
+{
+    tema: "Biologia",
+    texto: "O excesso de nutrientes na água pode provocar:",
+    opcoes: [
+        "Eutrofização",
+        "Desertificação",
+        "Formação de rochas",
+        "Aumento permanente do oxigênio"
+    ],
+    correta: 0,
+    explicacao: "O excesso de nutrientes pode causar proliferação de algas e reduzir o oxigênio da água."
+},
+{
+    tema: "Matemática",
+    texto: "Na escala 1:50.000, uma distância real de 2 km mede:",
+    opcoes: ["0,4 cm", "4 cm", "40 cm", "10 cm"],
+    correta: 1,
+    explicacao: "2 km equivalem a 200.000 cm. Dividindo por 50.000, obtemos 4 cm."
+},
+{
+    tema: "Biologia",
+    texto: "Se os peixes pequenos diminuem muito, seus predadores:",
+    opcoes: [
+        "Sempre aumentam",
+        "Podem diminuir por falta de alimento",
+        "Deixam de precisar de oxigênio",
+        "Limpam automaticamente a água"
+    ],
+    correta: 1,
+    explicacao: "Menos presas pode significar menos alimento para os predadores."
+},
+{
+    tema: "Matemática",
+    texto: "Uma lagoa retangular mede 3 km por 2 km. Qual é sua área?",
+    opcoes: ["5 km²", "6 km²", "10 km²", "12 km²"],
+    correta: 1,
+    explicacao: "Área do retângulo = comprimento × largura: 3 × 2 = 6 km²."
+},
+{
+    tema: "Biologia",
+    texto: "Qual indicador pode revelar poluição por matéria orgânica?",
+    opcoes: [
+        "Apenas a cor do rio",
+        "Redução do oxigênio dissolvido",
+        "O formato das margens",
+        "A profundidade, isoladamente"
+    ],
+    correta: 1,
+    explicacao: "A decomposição da matéria orgânica pode consumir o oxigênio dissolvido."
+},
+{
+    tema: "Matemática",
+    texto: "Duas lagoas têm 12,5 km² e 7,8 km². Qual é a diferença?",
+    opcoes: ["4,7 km²", "5,3 km²", "19,3 km²", "20,3 km²"],
+    correta: 0,
+    explicacao: "12,5 − 7,8 = 4,7 km²."
+},
+{
+    tema: "Biologia",
+    texto: "Qual medida ajuda a proteger um rio?",
+    opcoes: [
+        "Retirar a mata ciliar",
+        "Tratar o esgoto e proteger nascentes",
+        "Soltar espécies exóticas",
+        "Canalizar todos os afluentes"
+    ],
+    correta: 1,
+    explicacao: "Tratar o esgoto e proteger as nascentes ajuda a conservar o ecossistema."
+}
+];
+
+let atual = 0;
+let selecionada = null;
+let respostas = Array(perguntas.length).fill(null);
+let confirmadas = Array(perguntas.length).fill(false);
+
+function comecar() {
+    atual = 0;
+    selecionada = null;
+    respostas = Array(perguntas.length).fill(null);
+    confirmadas = Array(perguntas.length).fill(false);
+
+    document.getElementById("inicio").classList.add("escondido");
+    document.getElementById("fim").classList.add("escondido");
+    document.getElementById("jogo").classList.remove("escondido");
+
+    document.getElementById("botaoProxima").textContent = "PRÓXIMA →";
+
+    renderizar();
+}
+
+function renderizar() {
+    const p = perguntas[atual];
+
+    document.getElementById("numero").textContent =
+        `PERGUNTA ${atual + 1} DE ${perguntas.length}`;
+
+    document.getElementById("area").textContent = p.tema.toUpperCase();
+    document.getElementById("tema").textContent = p.tema;
+    document.getElementById("pergunta").textContent = p.texto;
+
+    document.getElementById("progresso").style.width =
+        ((atual + 1) / perguntas.length * 100) + "%";
+
+    const lista = document.getElementById("alternativas");
+    lista.innerHTML = "";
+
+    selecionada = respostas[atual];
+
+    p.opcoes.forEach((opcao, i) => {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className = "alternativa";
+        item.disabled = confirmadas[atual];
+        item.setAttribute("aria-pressed", "false");
+
+        const letra = document.createElement("span");
+        letra.className = "letra";
+        letra.textContent = String.fromCharCode(65 + i);
+
+        const texto = document.createElement("span");
+        texto.textContent = opcao;
+
+        item.appendChild(letra);
+        item.appendChild(texto);
+
+        item.addEventListener("click", () => selecionarResposta(i));
+
+        lista.appendChild(item);
+    });
+
+    atualizarSelecao();
+
+    const feedback = document.getElementById("feedback");
+
+    if (confirmadas[atual]) {
+        const acertou = respostas[atual] === p.correta;
+
+        feedback.textContent =
+            (acertou ? "✅ CORRETO! " : "❌ INCORRETO. ") +
+            p.explicacao;
+    } else {
+        feedback.textContent = "";
+    }
+
+    document.getElementById("confirmar").disabled = confirmadas[atual];
+
+    document.getElementById("confirmar").textContent =
+        confirmadas[atual] ? "RESPOSTA CONFIRMADA" : "CONFIRMAR RESPOSTA";
+
+    document.getElementById("botaoProxima").textContent =
+        atual === perguntas.length - 1 ? "VER NOTA FINAL →" : "PRÓXIMA →";
+
+    document.getElementById("gabarito").classList.add("escondido");
+}
+
+function selecionarResposta(i) {
+    if (confirmadas[atual]) return;
+
+    selecionada = i;
+    atualizarSelecao();
+    document.getElementById("feedback").textContent = "";
+}
+
+function atualizarSelecao() {
+    const itens = document.querySelectorAll(".alternativa");
+
+    itens.forEach((item, i) => {
+        item.classList.toggle("selecionada", i === selecionada);
+        item.setAttribute("aria-pressed", i === selecionada ? "true" : "false");
+    });
+}
+
+function confirmarResposta() {
+    if (confirmadas[atual]) return;
+
+    if (selecionada === null) {
+        document.getElementById("feedback").textContent =
+            "Selecione uma alternativa antes de confirmar.";
+        return;
+    }
+
+    respostas[atual] = selecionada;
+    confirmadas[atual] = true;
+
+    renderizar();
+}
+
+function proxima() {
+    if (!confirmadas[atual]) {
+        document.getElementById("feedback").textContent =
+            "Confirme a resposta antes de continuar.";
+        return;
+    }
+
+    if (atual < perguntas.length - 1) {
+        atual++;
+        renderizar();
+    } else {
+        finalizar();
+    }
+}
+
+function anterior() {
+    if (atual > 0) {
+        atual--;
+        renderizar();
+    }
+}
+
+function mostrarGabarito() {
+    const g = document.getElementById("gabarito");
+    g.innerHTML = "";
+
+    const titulo = document.createElement("h3");
+    titulo.textContent = "Gabarito do apresentador";
+    g.appendChild(titulo);
+
+    perguntas.forEach((p, i) => {
+        const linha = document.createElement("p");
+        linha.textContent =
+            `${i + 1}. ${String.fromCharCode(65 + p.correta)} — ${p.opcoes[p.correta]}`;
+        g.appendChild(linha);
+    });
+
+    g.classList.toggle("escondido");
+}
+
+function finalizar() {
+    const nota = respostas.reduce((total, resposta, i) => {
+        return total + (
+            confirmadas[i] && resposta === perguntas[i].correta ? 1 : 0
+        );
+    }, 0);
+
+    document.getElementById("jogo").classList.add("escondido");
+    document.getElementById("fim").classList.remove("escondido");
+
+    document.getElementById("pontuacaoFinal").textContent =
+        `NOTA FINAL: ${nota}/10`;
+
+    document.getElementById("detalheFinal").textContent =
+        `Você acertou ${nota} de 10 perguntas.`;
+
+    document.getElementById("mensagemFinal").textContent =
+        nota >= 7
+            ? "🏆 VOCÊ GANHOU A LEMBRANCINHA!"
+            : "Você precisa de pelo menos 7 acertos para ganhar a lembrancinha.";
+
+    document.getElementById("tituloFinal").textContent =
+        nota >= 7 ? "PARABÉNS, CAMPEÃO!" : "DESAFIO CONCLUÍDO!";
+}
+
+function reiniciar() {
+    document.getElementById("fim").classList.add("escondido");
+    document.getElementById("jogo").classList.add("escondido");
+    document.getElementById("inicio").classList.remove("escondido");
+
+    atual = 0;
+    selecionada = null;
+    respostas = Array(perguntas.length).fill(null);
+    confirmadas = Array(perguntas.length).fill(false);
+}
+
+document.addEventListener("keydown", function(event) {
+    if (document.getElementById("jogo").classList.contains("escondido")) {
+        return;
+    }
+
+    if (["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+        return;
+    }
+
+    const tecla = event.key.toUpperCase();
+
+    if (["A", "B", "C", "D"].includes(tecla)) {
+        selecionarResposta(tecla.charCodeAt(0) - 65);
+    }
+
+    if (event.key === "Enter") {
+        event.preventDefault();
+        confirmarResposta();
+    }
+
+    if (event.key === "ArrowRight") {
+        proxima();
+    }
+
+    if (event.key === "ArrowLeft") {
+        anterior();
+    }
+});
+</script>
+</body>
+</html>
