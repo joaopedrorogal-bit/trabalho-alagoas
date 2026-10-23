@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -256,7 +255,7 @@ h2 {
     </p>
 
     <div class="painel">
-        <h2>Você consegue acertar pelo menos 7 das 10 perguntas?</h2>
+        <h2>Você consegue acertar pelo menos 3 das 5 perguntas?</h2>
 
         <p class="subtitulo">
             Lagoas Mundaú e Manguaba • Rio São Francisco
@@ -267,7 +266,7 @@ h2 {
         </p>
 
         <p style="color:#ffd778;font-weight:bold">
-            Acerte 7 ou mais e ganhe uma lembrancinha!
+            Acerte 3 ou mais e ganhe uma lembrancinha!
         </p>
 
         <button class="botao" onclick="comecar()">
@@ -291,7 +290,7 @@ h2 {
     <div class="painel">
 
         <div class="linha">
-            <span id="numero">PERGUNTA 1 DE 10</span>
+            <span id="numero">PERGUNTA 1 DE 5</span>
             <span id="area">MATEMÁTICA</span>
         </div>
 
@@ -348,7 +347,7 @@ h2 {
 
         <h2>Seu resultado</h2>
 
-        <p id="pontuacaoFinal">0/10</p>
+        <p id="pontuacaoFinal">0/5</p>
 
         <p id="detalheFinal" class="resultado"></p>
 
@@ -408,63 +407,7 @@ const perguntas = [
     opcoes: ["120.000 m³", "1.200.000 m³", "400.003 m³", "800.000 m³"],
     correta: 1,
     explicacao: "Multiplicamos a área pela profundidade média: 400.000 × 3 = 1.200.000 m³."
-},
-{
-    tema: "Biologia",
-    texto: "Por que a retirada de plantas aquáticas pode afetar os peixes?",
-    opcoes: [
-        "Porque todas as plantas produzem substâncias tóxicas",
-        "Porque as plantas impedem a entrada de luz na água",
-        "Porque elas podem fornecer abrigo e contribuir para o oxigênio da água",
-        "Porque os peixes dependem exclusivamente das plantas para se alimentar"
-    ],
-    correta: 2,
-    explicacao: "As plantas aquáticas podem oferecer abrigo e alimento e, durante a fotossíntese, liberar oxigênio na água."
-},
-{
-    tema: "Matemática",
-    texto: "Uma distância de 18 cm na maquete representa 1,8 km na realidade. Qual escala está sendo utilizada?",
-    opcoes: [
-        "1 cm para 10 m",
-        "1 cm para 1.000 m",
-        "1 cm para 100 m",
-        "1 cm para 500 m"
-    ],
-    correta: 2,
-    explicacao: "1,8 km equivalem a 1.800 m. Dividindo 1.800 por 18, descobrimos que cada centímetro representa 100 m."
-},
-{
-    tema: "Biologia",
-    texto: "Qual indicador pode sinalizar contaminação da água por esgoto?",
-    opcoes: [
-        "Presença de peixes, independentemente da quantidade",
-        "Presença de microrganismos indicadores de contaminação fecal",
-        "Transparência da água, isoladamente",
-        "Existência de vegetação nas margens"
-    ],
-    correta: 1,
-    explicacao: "Certos microrganismos indicadores podem revelar contaminação fecal e ajudar a identificar problemas na qualidade da água."
-},
-{
-    tema: "Matemática",
-    texto: "Na maquete, uma região mede 7 cm por 3 cm. Com a escala de 1 cm para 100 m, qual é sua área real?",
-    opcoes: ["21.000 m²", "210.000 m²", "2.100.000 m²", "70.000 m²"],
-    correta: 1,
-    explicacao: "As medidas reais são 700 m por 300 m. A área é 700 × 300 = 210.000 m²."
-},
-{
-    tema: "Biologia",
-    texto: "Como a perda de uma espécie pode afetar o restante de um ecossistema aquático?",
-    opcoes: [
-        "Impede qualquer mudança nas cadeias alimentares",
-        "Afeta somente as espécies que vivem fora da água",
-        "Garante o aumento de todas as outras populações",
-        "Pode alterar as relações alimentares e o equilíbrio do ecossistema"
-    ],
-    correta: 3,
-    explicacao: "As espécies estão conectadas pelas cadeias alimentares, então mudanças em uma população podem afetar outras."
-}
-];
+};
 
 let atual = 0;
 let selecionada = null;
@@ -634,18 +577,18 @@ function finalizar() {
     document.getElementById("fim").classList.remove("escondido");
 
     document.getElementById("pontuacaoFinal").textContent =
-        `NOTA FINAL: ${nota}/10`;
+        `NOTA FINAL: ${nota}/5`;
 
     document.getElementById("detalheFinal").textContent =
-        `Você acertou ${nota} de 10 perguntas.`;
+        `Você acertou ${nota} de 5 perguntas.`;
 
     document.getElementById("mensagemFinal").textContent =
-        nota >= 7
+        nota >= 3
             ? "🏆 VOCÊ GANHOU A LEMBRANCINHA!"
-            : "Você precisa de pelo menos 7 acertos para ganhar a lembrancinha.";
+            : "Você precisa de pelo menos 3 acertos para ganhar a lembrancinha.";
 
     document.getElementById("tituloFinal").textContent =
-        nota >= 7 ? "PARABÉNS, CAMPEÃO!" : "DESAFIO CONCLUÍDO!";
+        nota >= 3 ? "PARABÉNS, CAMPEÃO!" : "DESAFIO CONCLUÍDO!";
 }
 
 function reiniciar() {
